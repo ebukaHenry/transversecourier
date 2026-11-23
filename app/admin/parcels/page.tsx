@@ -11,6 +11,11 @@ import {
 //export const dynamic = "force-dynamic";
 
 export default async function ParcelsPage() {
+   const isAdmin = await verifyAdminSession();
+
+  if (!isAdmin) {
+    redirect("/admin/login");
+  }
 
   const supabase = createAdminClient();
 
