@@ -8,9 +8,9 @@ import { Phone, Mail, MapPin, Send } from "lucide-react";
 export default function ContactPage() {
   const [message, setMessage] = useState("");
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
-    setMessage("Your message form is ready. We'll connect it to the backend shortly.");
+    setMessage("Your message form is ready.");
   }
 
   return (
@@ -41,7 +41,7 @@ export default function ContactPage() {
               <Phone className="text-[#EA6505]" size={27} />
               <div>
                 <h3 className="font-bold">Phone</h3>
-                <p className="text-gray-600">Company phone number</p>
+                <p className="text-gray-600">+Transversecourier</p>
               </div>
             </div>
 
@@ -49,15 +49,15 @@ export default function ContactPage() {
               <Mail className="text-[#EA6505]" size={27} />
               <div>
                 <h3 className="font-bold">Email</h3>
-                <p className="text-gray-600">Company email address</p>
+                <p className="text-gray-600">help@transversecourierservice.com</p>
               </div>
             </div>
 
             <div className="flex gap-4 items-center">
               <MapPin className="text-[#EA6505]" size={27} />
               <div>
-                <h3 className="font-bold">Location</h3>
-                <p className="text-gray-600">Company office address</p>
+                <h3 className="font-bold">Head office</h3>
+                <p className="text-gray-600">United Kingdom, London</p>
               </div>
             </div>
           </div>
