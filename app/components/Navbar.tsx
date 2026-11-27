@@ -20,10 +20,10 @@ export default function Navbar() {
       <div className="flex items-center justify-between">
         <Link href="/" onClick={() => setMenuOpen(false)}>
           <Image
-            src="/transverse-logo.jpeg"
+            src="/transverse-logo.png"
             alt="Transverse Courier Services"
             width={180}
-            height={80}
+            height={200}
             priority
             className="h-14 w-auto object-contain"
           />
