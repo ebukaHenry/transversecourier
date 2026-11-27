@@ -53,6 +53,9 @@ export async function updateParcelStatus(formData: FormData) {
   const allowedStatuses = [
     "pending",
     "picked_up",
+    "custom_clearance",
+    "withheld",
+    "released",
     "in_transit",
     "delivered",
   ];
@@ -71,4 +74,52 @@ export async function updateParcelStatus(formData: FormData) {
   }
 
   revalidatePath("/admin/parcels");
+}
+
+/**parcel locations */
+export async function updateParcelLocation(formData: FormData) {
+  if (!(await verifyAdminSession())) redirect("/admin/login");
+
+  const supabase = createAdminClient();
+
+  const parcelId = String(formData.get("parcel_id") || "");
+  const location = String(formData.get("current_location") || "").trim();
+  const note = String(formData.get("location_note") || "").trim();
+
+  if (!parcelId || !location) {
+    throw new Error("Parcel ID and current location are required.");
+  }
+
+  const { data: parcel, error: fetchError } = await supabase
+    .from("parcels")
+    .select("status")
+    .eq("id", parcelId)
+    .single();
+
+  if (fetchError) throw new Error(fetchError.message);
+
+  const { error: updateError } = await supabase
+    .from("parcels")
+    .update({
+      current_location: location,
+      location_note: note || null,
+    })
+    .eq("id", parcelId);
+
+  if (updateError) throw new Error(updateError.message);
+
+  const { error: historyError } = await supabase
+    .from("parcel_history")
+    .insert({
+      parcel_id: parcelId,
+      status: parcel.status,
+      message: note
+        ? `Location updated to ${location}. ${note}`
+        : `Parcel location updated to ${location}.`,
+    });
+
+  if (historyError) throw new Error(historyError.message);
+
+  revalidatePath("/admin/parcels");
+  revalidatePath("/track");
 }

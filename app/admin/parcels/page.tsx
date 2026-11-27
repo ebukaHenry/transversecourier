@@ -6,6 +6,7 @@ import { createAdminClient } from "@/app/lib/supabase/admin";
 import {
   createParcel,
   updateParcelStatus,
+  updateParcelLocation,
 } from "./actions";
 
 //export const dynamic = "force-dynamic";
@@ -135,6 +136,7 @@ export default async function ParcelsPage() {
                     <th className="p-3">Destination</th>
                     <th className="p-3">Status</th>
                     <th className="p-3">Update</th>
+                    <th className="p-3">Current Location</th>
                   </tr>
                 </thead>
 
@@ -175,6 +177,9 @@ export default async function ParcelsPage() {
                           >
                             <option value="pending">Pending</option>
                             <option value="picked_up">Picked Up</option>
+                            <option value="custom_clearance">Custom Clearance</option>
+                            <option value="withheld">Withheld by custom</option>
+                            <option value="released">Package released</option>
                             <option value="in_transit">In Transit</option>
                             <option value="delivered">Delivered</option>
                           </select>
@@ -184,6 +189,40 @@ export default async function ParcelsPage() {
                             className="bg-[#EA6505] text-white px-3 py-2 rounded"
                           >
                             Save
+                          </button>
+                        </form>
+                      </td>
+
+                      <td className="p-3 min-w-64">
+                        <form action={updateParcelLocation} className="space-y-2">
+                          <input
+                            type="hidden"
+                            name="parcel_id"
+                            value={parcel.id}
+                          />
+
+                          <input
+                            type="text"
+                            name="current_location"
+                            defaultValue={parcel.current_location || ""}
+                            placeholder="Current location"
+                            required
+                            className="border rounded p-2 w-full"
+                          />
+
+                          <textarea
+                            name="location_note"
+                            defaultValue={parcel.location_note || ""}
+                            placeholder="Location update note (optional)"
+                            className="border rounded p-2 w-full"
+                            rows={2}
+                         />
+
+                          <button
+                            type="submit"
+                          className="bg-[#19477F] text-white px-3 py-2 rounded"
+                          >
+                            Save Location
                           </button>
                         </form>
                       </td>
